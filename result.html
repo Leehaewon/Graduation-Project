@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="resources/logo_white.png">
+
+    <title>Style Transfer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="js/connectionModule.js"></script>
+
+</head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" onclick="post_deleteImg('result');"><img src="resources/ic_home.png" style="height: 24px;"></a>
+      </nav>
+    </header>
+        <div id="wrapper" class="py-5">
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper" class="text-center">
+              <h1 class="jumbotron-heading">짜잔! 마음에 드시나요?</h1>
+              <p class="lead text-muted"><strong>최종 이미지를 받으시려면 '이메일로 전송'을 눌러주세요.</strong></p>
+
+                <div class="m-auto" id="image-div">
+                    <div id="back-area">
+                        <img class="p-2" id="result-image" style="height: 500px;"/>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-lg btn-light mt-4 m-2" data-toggle="modal" data-target="#exampleModal" onclick="readyModal()">이메일로 전송</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div id="modal-check" style="display: none;">
+                                    <img src="resources/ic_check.png" style="width: 150px;">
+                                    <p class="lead">전송이 완료되었습니다.</p>
+                                </div>
+                                <div id="modal-fail" style="display: none;">
+                                    <img src="resources/ic_fail.png" style="width: 150px;">
+                                    <p class="lead">이메일 전송을 실패했습니다. 다시 시도해주세요.</p>
+                                </div>
+                                <form id="form-mail" method="post" enctype="text/plain">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">이메일 주소</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="이메일 입력">
+                                        <small id="emailHelp" class="form-text text-muted">저흰 누구에게도 당신의 이메일 정보를 공유하지 않습니다.</small>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="btn-close" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">닫기</button>
+                                <button type="button" id="btn-send" class="btn btn-warning" id="btn-send" onclick="sendEmail()">전송하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a onclick="post_deleteImg('result');" class="btn btn-lg btn-danger mt-4 m-2">처음으로</a>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+        <!-- /#wrapper -->
+    <!-- Menu Toggle Script -->
+    <script type="text/javascript">
+
+        var form_mail = document.getElementById('form-mail');
+        var btn_send = document.getElementById('btn-send');
+        var modal_check = document.getElementById('modal-check');
+        var modal_fail = document.getElementById('modal-fail');
+
+        window.onload = function(){
+            //$('#result-image').attr('src', 'resources/content.jpg');
+            // 결과이미지 src 기입
+            post_checkBeforeImg('result');
+        };
+
+        function sendEmail(){
+            var emailaddress = document.getElementById('exampleInputEmail1').value;
+            post_sendEmail('result', emailaddress);
+        }
+
+        function closeModal(){
+            modal_check.style.display = 'none';
+            modal_fail.style.display = 'none';
+        }
+        function readyModal(){
+            document.getElementById('exampleInputEmail1').value = '';
+            form_mail.style.display = 'block';
+            btn_send.style.display = 'block';
+        }
+
+        function sucess_checkBeforImg(url){    
+            var img = document.getElementById("result-image");
+            img.src = resultpath_url + url;
+            img.height = "500";
+            console.log('>> sucess_checkBeforImg()');
+        }
+
+        function success_sendDeleteImg() {
+            var move_point = start_point_url;
+            location.href=move_point;
+            console.log('>> success_sendDeleteImg()');
+        }
+
+        function fail_sendDeleteImg() {
+            var move_point = start_point_url;
+            location.href = move_point;
+            console.error('>> fail_sendDeleteImg()');
+        }
+
+        function success_sendEmail() {
+            form_mail.style.display = 'none';
+            btn_send.style.display = 'none';
+            modal_check.style.display = 'block';
+            console.log('>> success_sendEmail()');
+        }
+
+        function fail_sendEmail(){
+            form_mail.style.display = 'none';
+            btn_send.style.display = 'none';
+            modal_fail.style.display = 'block';
+            console.error('>> fail_sendEmail()');
+        }
+    </script>   
+
+    <!-- Bootstrap core JavaScript -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--     <script src="dist/jquery/jquery.min.js"></script> -->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="dist/jquery/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="dist/jquery/jquery.xdomainajax.js"></script>
+</body>
+
+</html>

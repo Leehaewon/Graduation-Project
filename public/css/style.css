@@ -1,0 +1,271 @@
+/*!
+ * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
+ */
+
+body {
+    overflow: hidden;
+}
+
+* {
+  font-family: '나눔스퀘어', 'NanumSquare', san-serif;
+}
+
+.btn-warning{
+  color: #fff;
+}
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+#wrapper.toggled {
+  padding-left: 250px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 380px;
+  width: 0;
+  height: 100%;
+  margin-left: -380px;
+  overflow-y: auto;
+  background: #333333;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 380px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -380px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    ::-webkit-scrollbar {
+        width: .75em;
+        height: .75em;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #444444;
+    }
+
+    ::-webkit-scrollbar-thumb:vertical {
+        height: 5em;
+        background-color: #666666;
+        border-radius: 7px;
+    }
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 380px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav div {
+    float: left;
+}
+
+.sidebar-nav div {
+    border: none;
+    display: block;
+}
+
+.sidebar-nav li div:hover {
+    opacity: 0.8;
+}
+
+.sidebar-nav li a:active, .sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav>.sidebar-brand {
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 380px;
+  }
+  #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 380px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+
+
+/* 
+
+style.html, content.html
+
+*/
+
+#menu-toggle{
+    position: absolute;
+    z-index: 1000;
+    cursor: pointer;
+    width: 40px;
+    height: 60px;
+    padding: 10px 0;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #333;
+    border: 1px solid #333;
+    margin-top: 30px;
+}
+#page-content-wrapper{
+    margin-top: 100px;
+}
+#image-div{
+    width: 700px;
+    height: 500px;
+}
+#drop-area{
+    height: 500px;
+}
+#back-area{
+    position: absolute;
+    z-index: -1;
+    top: 120px;
+    width: 700px;
+    height: 500px;
+    border: 1px solid #e0e0e0;
+    background-color: #efefef;
+    border-radius: 5px;
+}
+.card{
+    margin: 10px;
+    width: 140px;
+    height: 140px;
+}
+.card-img{
+    height: inherit;
+    min-width: 140px;
+}
+#popup{
+  top: 400px;
+}
+
+/* 
+
+masking.html 
+
+*/
+#toolbox{
+    position: absolute;
+    z-index: 10;
+    right: 470px;
+    top: 130px;
+}
+.tool{
+    width: 45px;
+    height: 45px;
+    padding: 7px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 2px rgb(204, 204, 204);
+}
+.tool>img{
+    width:30px;
+}
+.tool:hover {
+    box-shadow: 0 0 4px rgb(204, 204, 204);
+    border: 1px solid #cccccc;
+    background-color: #e0e0e0;
+    transition: all .5s ease;
+}
+label.active{
+    background-color: #e0e0e0;
+}
+/*Styling Selectbox*/
+
+/*
+.dropdown .select {
+    cursor: pointer;
+    display: block;
+    padding: 10px;
+}
+.dropdown .select > img {
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+.dropdown:hover {
+    box-shadow: 0 0 4px rgb(204, 204, 204);
+}
+.dropdown:active {
+    background-color: #f8f8f8;
+}
+.dropdown.active:hover,
+.dropdown.active {
+    box-shadow: 0 0 4px rgb(204, 204, 204);
+    background-color: #f8f8f8;
+}
+.dropdown.active .select > i {
+    transform: rotate(-90deg);
+}
+.dropdown .dropdownMenu {
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    right: 400px;
+    top: 150px;
+    margin-top: 1px;
+    box-shadow: 0 1px 2px rgb(204, 204, 204);
+    border-radius: 0 1px 5px 5px;
+    overflow: hidden;
+    display: none;
+    max-height: 144px;
+    overflow-y: auto;
+    z-index: 9;
+}
+.dropdown .dropdownMenu li {
+    padding: 10px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+} 
+.dropdown .dropdownMenu {
+    padding: 0;
+    list-style: none;
+}
+.dropdown .dropdownMenu li:hover {
+    background-color: #f2f2f2;
+}
+.dropdown .dropdownMenu li:active {
+    backgroun-color: #e2e2e2;
+}*/

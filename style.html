@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="resources/logo_white.png">
+
+    <title>Style Transfer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/dragdrop.js" type="text/javascript"></script>
+    <script src="js/connectionModule.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="http://localhost:3000/"><img src="resources/ic_home.png" style="height: 24px;"></a>
+      </nav>
+    </header>
+        <div id="wrapper" class="py-5">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <div class="sidebar-nav px-3" id="sidebar">
+                    <br>
+                </div>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <a class="btn btn-secondary" id="menu-toggle">
+                <img src="resources/ic_album.png" style="width: 25px;" />
+            </a>
+            <div id="page-content-wrapper" class="text-center">
+            <div class="modal" id="popup" role="dialog">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <p class="lead m-auto pt-2 pb-2">이미지를 선택해주세요.</p>
+                </div>
+              </div>
+            </div>
+              <h1 class="jumbotron-heading"><strong>Style Image </strong>를 선택해 주세요.</h1>
+              <p class="lead text-muted"><strong> 어떤 스타일로 사진을 바꾸고 싶으신가요? 명화를 아래 영역에 드래그&드롭해주세요.</strong></p>
+
+                <div class="m-auto" id="image-div">
+                    <div id="drop-area">
+                    </div>
+                    <div id="back-area">
+                        <img class="p-2" id="style-image" style="height: 500px;" />
+                    </div>
+                </div>
+              <p>
+<!--                    <a href="#" class="btn btn-lg btn-secondary m-2">prev</a>-->
+                <!-- <a href="http://localhost:3000/content" class="btn btn-lg btn-primary m-2">next</a> -->
+                <a onclick="post_imgUrl('content', 'style');" class="btn btn-lg btn-warning mt-5">다음</a>
+
+              </p>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    <script type="text/javascript">
+        //        Menu Toggle Script
+        window.onload = function(){
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+
+            post_checkBeforeImg('content');
+            post_loadImgList('style');
+            setInterval(function(){
+                post_loadImgList('style');
+            }, 2000);
+        };
+
+        var dropArea = document.getElementById('drop-area');
+        dropArea.addEventListener('dragover', dragover_handler, false);
+        dropArea.addEventListener('drop', drop_handler, false);
+
+        var dragImgs = document.getElementsByClassName('card-img');
+        for(var i=0; i<dragImgs.length; i++){
+            dragImgs[i].addEventListener('dragstart', dragstart_handler, false);
+            dragImgs[i].addEventListener('dragend', dragend_handler, false);
+            dragImgs[i].attr('draggable', 'true');
+        }
+    </script>
+    <script type="text/javascript">
+        var element = document.getElementById('sidebar');
+        function success_loadImgList(list){
+            element.innerHTML = '';
+            console.log(list);
+            for(var i=0;i<list.length;i++){
+                //alert(list[i]);
+                var div = document.createElement('div');
+                div.className = 'card';
+                var img = new Image();
+                img.src = path_url+list[i];
+                img.className = 'card-img';
+                element.appendChild(div);
+                div.appendChild(img);
+            }
+            console.log(">> success_loadImgList()");
+        }
+
+        function sucess_checkBeforImg(url){    
+            var img = document.getElementById("style-image");
+            img.src = path_url + url;
+            //img.height = "500px";
+            console.log(">> sucess_checkBeforImg()");
+        }
+
+        function success_sendImg() {
+            var move_point = start_point_url + "content";
+            location.href=move_point;
+            console.log(">> success_sendImg()");
+        }
+
+        function fail_sendImg() {
+            $('#popup').fadeIn('slow');
+            setTimeout(function(){
+                $('#popup').fadeOut('slow');
+            }, 1500);
+
+            console.error(">> fail_sendImg()");
+        }
+
+    </script>
+    <!-- Bootstrap core JavaScript -->
+   <!--  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<!--    <script src="dist/jquery/jquery.min.js"></script>-->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="dist/jquery/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="dist/jquery/jquery.xdomainajax.js"></script>
+</body>
+
+</html>

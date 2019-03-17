@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="resources/logo_white.png">
+
+    <title>Style Transfer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="dist/jquery/jquery-1.12.1.min.js" type="text/javascript"></script>
+    <script src="js/connectionModule.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" onclick="post_deleteImg('mask');"><img src="resources/ic_home.png" style="height: 24px;"></a>
+      </nav>
+    </header>
+        <div id="wrapper" class="py-5">
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper" class="text-center">
+            <div class="modal" id="popup" role="dialog">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <p class="lead m-auto pt-2 pb-2">잠시만 기다려주세요.</p>
+                </div>
+              </div>
+            </div>
+              <h1 class="jumbotron-heading">변환하고 싶지 않은 영역이 있다면 선택해 주세요.</h1>
+              <p class="lead text-muted"><strong>+ 툴로 물체를 선택하시고, - 툴로 수정하세요. 사진 전체를 변환하고 싶으시다면 <strong>'다음'</strong> 버튼을 눌러주세요.</strong></p>
+
+                <div class="m-auto" id="image-div">
+                    <!-- 표시용 캔버스 -->
+                    <canvas id="pen-panel" class="m-2">
+                    </canvas>
+                    <!-- 전송용 캔버스 -->
+                    <canvas class="collapse" id="output-panel">
+                    </canvas> 
+<!--                    <p id="coordinates"></p>-->
+                    <div id="back-area" class="p-2">
+                        <img id="content-image" alt="Select your content image." src="resources/selectedImages/content_image.jpg" style="height: 480px; width: auto"/>
+                        <iframe id="refresh-image" src="resources/selectedImages/send_image.jpg" scrolling="no" style="display: none">
+                        </iframe>
+                        <!--   -->
+                    </div>
+
+                </div>
+                <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons" id="toolbox">
+                    <label class="btn btn-secondary tool" id="tool1">
+                        <input type="radio">
+                        <img alt="includeTool" src="resources/ic_include.png" />
+                    </label>
+                    <label class="btn btn-secondary tool" id="tool2">
+                        <input type="radio">
+                        <img alt="excludeTool" src="resources/ic_exclude.png" />
+                    </label>
+                    <label class="btn btn-secondary tool" id="tool3">
+                        <input type="radio">
+                        <img alt="refresh" src="resources/ic_refresh.png" />
+                    </label>
+                </div>
+                <p>
+                    <a href="http://localhost:3000/content" class="btn btn-lg btn-secondary mt-4 m-2">이전</a>
+                    <a href="http://localhost:3000/progress" class="btn btn-lg btn-warning mt-4 m-2">다음</a>
+                </p>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    <!-- Menu Toggle Script -->
+    <script type="text/javascript">
+        var contentImg = document.getElementById('content-image');
+        var frame = document.getElementById('refresh-image');
+        window.onload = function(){
+            //먼저 이미지 보여줄수 있게 check 하는부분
+            //post_checkBeforeImg('mask');
+            var contentImg = document.getElementById('content-image');
+            var originImg = new Image();
+            originImg.src = contentImg.src;
+            
+            var toolnum = 0; // 0:default, 1:include 2:exclude 3:refresh
+            var canvas = document.getElementById("pen-panel");
+            var outCanvas = document.getElementById("output-panel");
+            var dataURL;
+            var ctx = canvas.getContext("2d");
+            var ctx2 = outCanvas.getContext("2d");
+            var pos = {drawable:false, x:0, y:0};
+            var canDraw = false;
+            
+            outCanvas.height = canvas.height = 480;
+            outCanvas.width = canvas.width = contentImg.width*(480/contentImg.height);
+            
+            ctx.lineWidth = 10;
+            ctx2.lineWidth = 10;
+            ctx2.fillStyle ="rgb(128,128,128";
+            ctx2.fillRect(0,0,outCanvas.width,outCanvas.height);
+            
+            $('.tool').click(function(e){
+                switch(this.id){
+                    case "tool1":
+                        canDraw = true;
+                        toolnum = 1;
+                        ctx.strokeStyle = "#fff"; //include
+                        ctx2.strokeStyle = "#fff"; //include
+                        break;
+                    case "tool2":
+                        canDraw = true;
+                        toolnum = 2;
+                        ctx.strokeStyle = "#000"; //exclude
+                        ctx2.strokeStyle = "#000"; //exclude
+                        break;
+                    case "tool3":
+                        canDraw = false;
+                        toolnum = 3;
+                        CanvasRefresh(originImg.src);
+                        break;
+                }
+            });
+            
+            function extractData(){ // dataURL 이미지로 유진이 코드에 넘겨줘야함
+                dataURL = outCanvas.toDataURL('image/jpg');
+
+
+
+
+                //alert(dataURL);
+                post_maskImgUrl('mask', dataURL);
+                //유진이 파이썬 코드 실행할 수 있도록 통신부분 구현
+                // 1. 이미지 포맷으로 인코딩 필요 
+
+                //
+                
+               // var newimg = new Image();
+               // newimg.src = dataURL;
+               // $('#content-image').attr('src', newimg.src);
+                
+                //
+                
+                // var newSrc = 'resources/selectedImages/mask.jpg'; // 마스킹된 결과 이미지 주소
+                // CanvasRefresh(newSrc);
+                $('#popup').fadeIn('slow');
+
+            }
+            
+            function listener(event){
+                switch(event.type){
+                    case "mousedown":
+                        if(canDraw)
+                            initDraw(event);
+                        break;
+                    case "mousemove":
+                        if(pos.drawable && canDraw)
+                            draw(event);
+                        break;
+                    case "mouseup":
+                        if(canDraw)
+                            finishDraw();
+                        break;
+                }
+            }
+
+            canvas.addEventListener("mousedown", listener);
+            canvas.addEventListener("mousemove", listener);
+            canvas.addEventListener("mouseup", listener);
+
+            function CanvasRefresh(imgSrc){ // 재가동부분, 유진이 코드 다시 실행해주는 부분 필요
+                contentImg.src = imgSrc;
+                ctx2.clearRect(0,0,outCanvas.width, outCanvas.height);
+                ctx2.fillRect(0,0,outCanvas.width,outCanvas.height);
+                post_deleteMaskImg('mask');
+            }
+            
+            function initDraw(event){
+                ctx.beginPath();
+                ctx2.beginPath();
+                pos.drawable = true;
+                var coors = getPosition(event);
+                pos.x = coors.X;
+                pos.y = coors.Y;
+                ctx.moveTo(pos.x, pos.y);
+                ctx2.moveTo(pos.x, pos.y);
+            }
+            function draw(event){
+                var coors = getPosition(event);
+                ctx.moveTo(pos.x, pos.y);
+                ctx.lineTo(coors.X, coors.Y);
+                ctx2.moveTo(pos.x, pos.y);
+                ctx2.lineTo(coors.X, coors.Y);
+                pos.x=coors.X;
+                pos.y=coors.Y;
+                ctx.stroke();
+                ctx2.stroke();
+            }
+            function finishDraw(){
+                pos.drawable = false;
+                pos.x=0;
+                pos.y=0;
+                extractData();
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+            }
+            function getPosition(event){
+                var x=event.pageX-canvas.offsetLeft;
+                var y=event.pageY-canvas.offsetTop-148;
+                return {X:x, Y:y};
+            }
+        };
+
+        function sucess_checkBeforImg(url){
+            contentImg.src = path_url + url;
+            contentImg.height = "500";
+            console.log('>> sucess_checkBeforImg()');
+        }
+
+        function success_sendMaskImg() {
+            $('#popup').fadeOut('slow');
+            frame.src = 'resources/selectedImages/send_image.jpg';
+            frame.contentWindow.location.reload();
+            contentImg.src = frame.src;
+            console.log('>> success_sendMaskImg()');
+        }
+
+        function fail_sendMaskImg() {
+            console.error('>> fail_sendMaskImg()');
+        }
+
+        function success_sendDeleteMaskImg() {
+            console.log('>> success_sendDeleteMaskImg()');
+        }
+
+        function fail_sendDeleteMaskImg() {
+            console.error('>> fail_sendDeleteMaskImg()');
+        }
+
+        function success_sendDeleteImg() {
+            var move_point = start_point_url;
+            location.href=move_point;
+            console.log('>> success_sendDeleteImg()');
+        }
+
+        function fail_sendDeleteImg() {
+            console.error('>> fail_sendDeleteImg()');
+        }
+
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <!--
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<!--    <script src="dist/jquery/jquery.min.js"></script>-->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="dist/jquery/jquery.xdomainajax.js"></script>
+</body>
+
+</html>

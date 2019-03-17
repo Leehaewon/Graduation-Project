@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Style Transfer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="home.html">Logo</a>
+      </nav>
+    </header>
+        <div id="wrapper" class="py-5">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <div class="sidebar-nav px-3">
+                    <br>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/Penguins.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/style2.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/z.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                    <div class="card shadow-sm">
+                        <img class="card-img" src="resources/images/lena_gray.jpg"/>
+                    </div>
+                </div>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">
+                <img src="resources/ic_album.png" style="width: 30px;" />
+            </a>
+            <div id="page-content-wrapper" class="text-center">
+              <h1 class="jumbotron-heading">Select a Style Image.</h1>
+              <p class="lead text-muted">Something short and leading about the collection below—its content</p>
+
+                <div class="m-auto" id="image-div">
+                    <div id="image-area">
+                        <img class="p-2" id="style-image" src="resources/style.jpg" />
+                    </div>
+                </div>
+              <p>
+<!--                    <a href="#" class="btn btn-lg btn-secondary m-2">prev</a>-->
+                <a href="http://localhost:3000/content" class="btn btn-lg btn-primary m-2">next</a>
+              </p>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    <!-- Menu Toggle Script -->
+    <script type="text/javascript">
+        window.onload = function(){
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        };
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--    <script src="dist/jquery/jquery.min.js"></script>-->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

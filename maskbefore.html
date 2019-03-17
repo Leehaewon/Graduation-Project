@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Style Transfer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="https://localhost:3000/">Logo</a>
+      </nav>
+    </header>
+        <div id="wrapper" class="py-5">
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper" class="text-center">
+              <h1 class="jumbotron-heading">Select an Object</h1>
+              <p class="lead text-muted">Something short and leading about the collection below—its content</p>
+
+                <div class="m-auto" id="image-div">
+                    <canvas id="pen-panel">
+                    </canvas>
+<!--                    <p id="coordinates"></p>-->
+                    <div id="back-area">
+                        <img class="p-2" id="content-image" src="resources/content.jpg" style="height: 400px;"/>
+                    </div>
+                </div>
+                <div class="dropdown" id="toolbox">
+                     <button class="btn tool" type="button" data-toggle="dropdown" aria-expanded="trues">
+                        <img id="dropdownMenuButton" src="resources/ic_album.png"/>
+                    </button>
+                    <div class="dropdown-menu" style="border: none;">
+                        <button class="dropdown-item tool" type="button">
+                            <img class="item" alt="includeTool" src="resources/ic_include.png" /></button>
+                        <button class="dropdown-item tool" type="button">
+                            <img class="item" alt="excludeTool" src="resources/ic_exclude.png" /></button>
+                        <button class="dropdown-item tool" type="button">
+                            <img class="item" alt="refresh" src="resources/ic_refresh.png" /></button>
+                    </div>
+                </div>
+                <p>
+                    <a href="https://localhost:3000/content" class="btn btn-lg btn-secondary m-2">prev</a>
+                    <a href="https://localhost:3000/progress" class="btn btn-lg btn-primary m-2">next</a>
+                </p>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    <!-- Menu Toggle Script -->
+    <script type="text/javascript">
+        window.onload = function(){
+            var toolnum = 0; // 0:default, 1:include 2:exclude 3:refresh
+            var canvas = document.getElementById("pen-panel");
+            var ctx = canvas.getContext("2d");
+            var pos = {drawable:false, x:0, y:0};
+            var canDraw = false;
+            canvas.width = 400;
+            canvas.height = 400;
+            ctx.lineWidth = 1;
+
+            $('.item').click(function(e){
+                var btn = document.getElementById('dropdownMenuButton');
+                switch(e.target.alt){
+                    case "includeTool":
+                        canDraw = true;
+                        toolnum = 1;
+                        ctx.strokeStyle = "#000"; //include
+                        btn.src = e.target.src;
+                        break;
+                    case "excludeTool":
+                        canDraw = true;
+                        toolnum = 2;
+                        ctx.strokeStyle = "#ff0000"; //exclude
+                        btn.src = e.target.src;
+                        break;
+                    case "refresh":
+                        toolnum = 3;
+                        CanvasRefresh();
+                        break;
+                }
+            });
+
+//            var display = document.getElementById("coordinates");
+
+            function listener(event){
+                switch(event.type){
+                    case "mousedown":
+                        if(canDraw)
+                            initDraw(event);
+                        break;
+                    case "mousemove":
+                        if(pos.drawable)
+                            draw(event);
+                        break;
+                    case "mouseup":
+                        finishDraw();
+                        break;
+                }
+            }
+
+            canvas.addEventListener("mousedown", listener);
+            canvas.addEventListener("mousemove", listener);
+            canvas.addEventListener("mouseup", listener);
+
+            function initDraw(event){
+                ctx.beginPath();
+                pos.drawable = true;
+                var coors = getPosition(event);
+                pos.x = coors.X;
+                pos.y = coors.Y;
+                ctx.moveTo(pos.x, pos.y);
+            }
+            function draw(event){
+                var coors = getPosition(event);
+                ctx.moveTo(pos.x, pos.y);
+                ctx.lineTo(coors.X, coors.Y);
+                pos.x=coors.X;
+                pos.y=coors.Y;
+                ctx.stroke();
+//                display.innerHTML = "X:"+coors.X+"  Y:"+coors.Y;
+            }
+            function finishDraw(){
+                pos.drawable = false;
+                pos.x=0;
+                pos.y=0;
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+            }
+            function getPosition(event){
+                var x=event.pageX-canvas.offsetLeft;
+                var y=event.pageY-canvas.offsetTop-148;
+                return {X:x, Y:y};
+            }
+
+            var bgImg = new Image();
+            bgImg.onload = function() {
+                canvas.height = img.height;
+                canvas.width = img.width;
+                ctx.drawImage(img,0,0,img.width, img.height);
+            };
+            bgImg.src = "resources/content.jpg"; //////////////////////////////// content image url 만약 마스킹 이미지가 들어오면 여기서 업데이트
+        };
+    </script>
+
+   <script type="text/javascript" src="js/connectionModule.js"></script>
+       <script type="text/javascript" src="dist/jquery/jquery-1.12.1.min.js"></script>
+       <script type="text/javascript" src="dist/jquery/jquery.xdomainajax.js"></script>
+<!--    <script src="dist/jquery/jquery.min.js"></script>-->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
